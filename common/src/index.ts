@@ -2,23 +2,23 @@ import zod from 'zod'
 
 // zod schemas for backend, types for frontend
 
-const signupSchema = zod.object({
+export const signupSchema = zod.object({
     email: zod.string().email(),
     name: zod.string().optional(),
     password: zod.string().min(6)
 })
 
-const signinSchema = zod.object({
+export const signinSchema = zod.object({
     email: zod.string().email(),
     password: zod.string().min(6)
 })
 
-const createBlogSchema = zod.object({
+export const createBlogSchema = zod.object({
     title: zod.string(),
     content: zod.string()
 })
 
-const updateBlogSchema = zod.object({
+export const updateBlogSchema = zod.object({
     id: zod.string(),
     title: zod.string(),
     content: zod.string(),

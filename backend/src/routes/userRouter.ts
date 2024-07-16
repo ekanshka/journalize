@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from 'hono/jwt'
+import { signinSchema, signupSchema } from "@ekanshk/medium-common";
 
 export const userRouter = new Hono<{ Bindings: { DATABASE_URL: string, JWT_SECRET: string } }>();
 
@@ -16,21 +17,30 @@ userRouter.post("/signup", async (c) => {
 
   try {
 
+    const parsedBody = signupSchema.safeParse(body);
+
+    if (!parsedBody.success) {
+      c.status(400);
+      return c.json({
+        msg: "Invalid inputs"
+      })
+    }
+
     const existing_user = await prisma.user.findUnique({
       where: {
-        email: body.email
+        email: parsedBody.data.email
       }
     })
 
     if (existing_user) {
-      c.status(401);
+      c.status(400);
       return c.json({msg: "the user already exists, signin instead"})
     }
 
     const user = await prisma.user.create({
       data: {
-        email: body.email,
-        password: body.password
+        email: parsedBody.data.email,
+        password: parsedBody.data.password
       }
     })
   
@@ -54,10 +64,19 @@ userRouter.post("/signin", async (c) => {
   const body = await c.req.json();
 
   try {
+    const parsedBody = signinSchema.safeParse(body);
+
+    if (!parsedBody.success) {
+      c.status(401);
+      return c.json({
+        msg: "Invalid inputs"
+      })
+    }
+
     const user = await prisma.user.findUnique({
       where: {
-        email: body.email,
-        password: body.password
+        email: parsedBody.data.email,
+        password: parsedBody.data.password
       }
     })
 

@@ -1,3 +1,4 @@
+import { createBlogSchema, updateBlogSchema } from "@ekanshk/medium-common";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
@@ -39,7 +40,7 @@ blogRouter.use('/*', async (c, next) => {
     }
 
   } catch (error) {
-    c.status(403);
+    c.status(401);
       return c.json({ 
         msg: "unauthorized"
       })
@@ -58,10 +59,20 @@ blogRouter.post("/", async (c) => {
   const authorId = c.get("userId");
 
   try {
+
+    const parsedBody = createBlogSchema.safeParse(body);
+
+    if (!parsedBody.success) {
+      c.status(400);
+      return c.json({
+        msg: "Invalid Inputs"
+      })
+    }
+
     const post = await prisma.post.create({
       data: {
-        title: body.title,
-        content: body.content,
+        title: parsedBody.data.title,
+        content: parsedBody.data.content,
         authorId: authorId
       }
     })
@@ -85,15 +96,24 @@ blogRouter.put("/", async (c) => {
   const authorId = c.get("userId");
 
   try {
+    const parsedBody = updateBlogSchema.safeParse(body);
+
+    if (!parsedBody.success) {
+      c.status(400);
+      return c.json({
+        msg: "Invalid Inputs"
+      })
+    }
+
     const post = await prisma.post.update({
       where: {
-        id: body.id,
+        id: parsedBody.data.id,
         authorId: authorId
       },
       data: {
-        title: body.title,
-        content: body.content,
-        published: body.published
+        title: parsedBody.data.title,
+        content: parsedBody.data.content,
+        published: parsedBody.data.published
       }
     })
 
