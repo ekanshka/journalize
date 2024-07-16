@@ -1,9 +1,10 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { sign, verify } from 'hono/jwt'
+import { sign } from 'hono/jwt'
 
 export const userRouter = new Hono<{ Bindings: { DATABASE_URL: string, JWT_SECRET: string } }>();
+
 
 userRouter.post("/signup", async (c) => {
 
@@ -14,6 +15,18 @@ userRouter.post("/signup", async (c) => {
   const body = await c.req.json();
 
   try {
+
+    const existing_user = await prisma.user.findUnique({
+      where: {
+        email: body.email
+      }
+    })
+
+    if (existing_user) {
+      c.status(401);
+      return c.json({msg: "the user already exists, signin instead"})
+    }
+
     const user = await prisma.user.create({
       data: {
         email: body.email,
