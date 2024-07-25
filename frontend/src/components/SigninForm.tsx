@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { SigninSchema } from "@ekanshk/medium-common";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 
 export const SigninForm = () => {
@@ -12,21 +12,31 @@ export const SigninForm = () => {
     formState: { isSubmitting },
   } = useForm<SigninSchema>();
 
-  const onSubmit = (data: SigninSchema) => {
-    axios
-      .post(`${BACKEND_URL}/api/v1/user/signin`, data)
-      .then((response) => {
+  const onSubmit = async (data: SigninSchema) => {
+    // axios
+    //   .post(`${BACKEND_URL}/api/v1/user/signin`, data)
+    //   .then((response) => {
+    //     const token = response.data.token;
+    //     localStorage.setItem("authorization", `Bearer ${token}`);
+    //     navigate("/blogs");
+    //   })
+    //   .catch((error) => {
+    //     if (error.response) {
+    //       alert(error.response.data.msg);
+    //     } else {
+    //       alert(error.message);
+    //     }
+    //   });
+    try {
+        const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, data)
         const token = response.data.token;
         localStorage.setItem("authorization", `Bearer ${token}`);
         navigate("/blogs");
-      })
-      .catch((error) => {
-        if (error.response) {
-          alert(error.response.data.msg);
-        } else {
-          alert(error.message);
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            alert(error.response.data.msg);
         }
-      });
+    }
   };
 
   return (
