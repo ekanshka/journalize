@@ -14,7 +14,7 @@ export const SignupForm = () => {
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, data)
             const token = response.data.token;
-            localStorage.setItem("authorization", `Bearer ${token}`);
+            localStorage.setItem("Authorization", `Bearer ${token}`);
             navigate("/blogs");
         } catch (error) {
             if (isAxiosError(error) && error.response) {

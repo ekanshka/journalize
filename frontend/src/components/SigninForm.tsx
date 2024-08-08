@@ -5,7 +5,7 @@ import axios, { isAxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 
 export const SigninForm = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -13,34 +13,22 @@ export const SigninForm = () => {
   } = useForm<SigninSchema>();
 
   const onSubmit = async (data: SigninSchema) => {
-    // axios
-    //   .post(`${BACKEND_URL}/api/v1/user/signin`, data)
-    //   .then((response) => {
-    //     const token = response.data.token;
-    //     localStorage.setItem("authorization", `Bearer ${token}`);
-    //     navigate("/blogs");
-    //   })
-    //   .catch((error) => {
-    //     if (error.response) {
-    //       alert(error.response.data.msg);
-    //     } else {
-    //       alert(error.message);
-    //     }
-    //   });
     try {
-        const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, data)
-        const token = response.data.token;
-        localStorage.setItem("authorization", `Bearer ${token}`);
-        navigate("/blogs");
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/user/signin`,
+        data
+      );
+      const token = response.data.token;
+      localStorage.setItem("Authorization", `Bearer ${token}`);
+      navigate("/blogs");
     } catch (error) {
-        if (isAxiosError(error) && error.response) {
-            alert(error.response.data.msg);
-        }
+      if (isAxiosError(error) && error.response) {
+        alert(error.response.data.msg);
+      }
     }
   };
 
   return (
-    // <form className="max-w-96 p-7 flex flex-col gap-7 rounded-xl border-gray-950 shadow-2xl">
     <form
       className="max-w-96 p-7 flex flex-col gap-7"
       onSubmit={handleSubmit(onSubmit)}
