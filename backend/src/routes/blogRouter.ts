@@ -112,8 +112,7 @@ blogRouter.put("/", async (c) => {
       },
       data: {
         title: parsedBody.data.title,
-        content: parsedBody.data.content,
-        published: parsedBody.data.published
+        content: parsedBody.data.content
       }
     })
 
@@ -137,12 +136,17 @@ blogRouter.get("/bulk", async (c) => {
         id: true,
         title: true,
         content: true,
+        published: true,
         author: {
           select: {
             name: true
           }
         }
-      }
+      }, orderBy: [
+        {
+          id: "desc"
+        }
+      ]
     });
     return c.json(posts);
 
@@ -167,6 +171,7 @@ blogRouter.get("/:id", async (c) => {
         id: true,
         title: true,
         content: true,
+        published: true,
         author: {
           select: {
             name: true

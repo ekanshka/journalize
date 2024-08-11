@@ -21,8 +21,7 @@ export const createBlogSchema = zod.object({
 export const updateBlogSchema = zod.object({
     id: zod.string(),
     title: zod.string(),
-    content: zod.string(),
-    published: zod.boolean().optional()
+    content: zod.string()
 })
 
 export type SignupSchema = zod.infer<typeof signupSchema>

@@ -6,7 +6,7 @@ interface IBlog {
     id: string;
     title: string;
     content: string;
-    published: boolean;
+    published: Date;
     author: {
       name: string
     };
@@ -42,8 +42,6 @@ export const useBlog = ( id : string) => {
         fetchBlog(id);
     }, [id])
   
-    console.log(blog);
-    
   return (
     {blog, loading, error}
   )

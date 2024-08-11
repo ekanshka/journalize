@@ -13,7 +13,7 @@ export const Blogs = () => {
           loading...
         </div>
       ) : (
-        <div className="w-1/2 p-10 flex flex-col">
+        <div className="lg:w-1/2 w-full p-10 flex flex-col">
           <div className="border-b-2 border-gray-200 flex gap-5 justify-start p-4">
             <span className="cursor-pointer">Create new </span>
             <span className="border-b-2 border-black cursor-pointer">

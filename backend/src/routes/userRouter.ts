@@ -84,7 +84,7 @@ userRouter.post("/signin", async (c) => {
     if (!user) {
       c.status(403);
       return c.json({
-        msg: "no such user found"
+        msg: "no such user found or wrong password"
       })
     } 
 
