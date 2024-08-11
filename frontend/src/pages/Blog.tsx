@@ -34,7 +34,7 @@ export const Blog = () => {
             <span className="">{Math.ceil(blog.content.length / 600) + " minute(s) read"}</span>
           </div>
           </div>
-          <div className="md:leading-loose tracking-wide md:text-lg leading-relaxed">{blog.content}</div>
+          <div className="font-roman md:leading-loose tracking-wide md:text-lg leading-relaxed">{blog.content}</div>
         </div>
       )}
     </div>

@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         inter: ['Inter', 'sans-serif'], // Basis Grotesque alternative
         playfair: ['Playfair Display', 'serif'], // Noe Display alternative
+        roman: ['Gideon Roman', 'serif'], // Noe Display alternative
       },
     },
   },
