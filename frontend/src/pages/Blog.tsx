@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useBlog } from "../hooks/useBlog";
 import { Appbar } from "../components/Appbar";
+import { Circle } from "../components/Circle";
 
 export const Blog = () => {
   const { id } = useParams();
@@ -19,13 +20,21 @@ export const Blog = () => {
           loading...
         </div>
       ) : (
-        <div className="lg:w-1/2 md:w-4/5 w-full p-10 flex flex-col gap-8">
+        <div className="md:max-w-3xl w-full p-10 flex flex-col gap-8">
           <div className="md:text-5xl text-4xl font-bold">{blog.title}</div>
-          <div className="text-slate-500">
+          <div className="flex flex-col gap-1">
+          {blog.author.name ? (
+                <div className="font-medium">
+                  By {blog.author.name}
+                </div>
+            ) : null}
+          <div className="text-slate-500 flex gap-3 place-items-center text-sm">
             Posted on {new Date(blog.published).toDateString()}
+            <Circle />
+            <span className="">{Math.ceil(blog.content.length / 600) + " minute(s) read"}</span>
           </div>
-          {blog.author.name ? <div className="font-medium text-right px-10">By {blog.author.name}</div> : null}
-          <div>{blog.content}</div>
+          </div>
+          <div className="md:leading-loose tracking-wide md:text-lg leading-relaxed">{blog.content}</div>
         </div>
       )}
     </div>
