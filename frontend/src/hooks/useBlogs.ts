@@ -25,8 +25,8 @@ export const useBlogs = () => {
          }
      });
      const blogs = response.data;
-     setLoading(false)
      setBlogsState(blogs);
+     setLoading(false)
    } catch (error) {
     if (axios.isAxiosError(error)) {
         if (error.response) {

@@ -4,6 +4,7 @@ import { SigninPage } from "./pages/SigninPage"
 import { Blogs } from "./pages/Blogs"
 import { NotFound } from "./pages/NotFound"
 import { Blog } from "./pages/Blog"
+import { CreateBlog } from "./pages/CreateBlog"
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path="/signin" element={<SigninPage />}/>
       <Route path="/blogs" element={<Blogs />}/>
       <Route path="/blogs/:id" element={<Blog />}/>
+      <Route path="/create-blog" element={<CreateBlog />}/>
       <Route path="*" element={<NotFound />}/>
     </Routes>
   )

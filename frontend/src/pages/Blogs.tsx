@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Appbar } from "../components/Appbar";
 import { BlogPreview } from "../components/BlogPreview";
 import { useBlogs } from "../hooks/useBlogs";
@@ -15,7 +16,7 @@ export const Blogs = () => {
       ) : (
         <div className="md:max-w-3xl w-full p-10 flex flex-col">
           <div className="border-b-2 border-gray-200 flex gap-5 justify-start p-4">
-            <span className="cursor-pointer">Create new </span>
+            <Link to={"/create-blog"} className="cursor-pointer">Create new </Link>
             <span className="border-b-2 border-black cursor-pointer">
               For you
             </span>

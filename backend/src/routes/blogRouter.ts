@@ -144,7 +144,7 @@ blogRouter.get("/bulk", async (c) => {
         }
       }, orderBy: [
         {
-          id: "desc"
+          published: "desc"
         }
       ]
     });
