@@ -8,7 +8,7 @@ import { ButtonPublish } from "../components/ButtonPublish";
 export const CreateBlog = () => {
   const navigate = useNavigate();
   const [blog, setBlog] = useState({ title: "", content: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -36,18 +36,21 @@ export const CreateBlog = () => {
       if (isAxiosError(error)) {
         if (error.response) {
           alert(error.response.data.msg);
-          setIsSubmitting(false)
+          setIsSubmitting(false);
+          if (error.response.status === 401) {
+            navigate("/signin");
+          }
         } else {
           alert(error.message);
-          setIsSubmitting(false)
+          setIsSubmitting(false);
         }
       } else {
         console.log(error);
-        setIsSubmitting(false)
+        setIsSubmitting(false);
       }
     }
   };
-  
+
   return (
     <div className="h-screen w-full flex flex-col place-items-center gap-5 ">
       <Appbar />

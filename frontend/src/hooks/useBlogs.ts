@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 interface IBlog {
   id: string;
@@ -12,41 +13,44 @@ interface IBlog {
 }
 
 export const useBlogs = () => {
-  const [ blogsState, setBlogsState ] = useState<IBlog[]>([]);
-  const [ loading, setLoading ] = useState(true);
-
+  const [blogsState, setBlogsState] = useState<IBlog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchBlogs = async () => {
-
-   try {
-     const response = await axios.get(BACKEND_URL + "/api/v1/blog/bulk", {
-         headers: {
-             Authorization: localStorage.getItem("Authorization")
-         }
-     });
-     const blogs = response.data;
-     setBlogsState(blogs);
-     setLoading(false)
-   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    try {
+      const response = await axios.get(BACKEND_URL + "/api/v1/blog/bulk", {
+        headers: {
+          Authorization: localStorage.getItem("Authorization"),
+        },
+      });
+      const blogs = response.data;
+      setBlogsState(blogs);
+      setLoading(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
         if (error.response) {
-            alert(error.response.data.msg)
+          alert(error.response.data.msg);
+
+          if (error.response.status === 401) {
+            navigate("/signin");
+          }
         } else {
-            alert(error.message)
+          alert(error.message);
         }
-    } else {
-        console.log(error)
+      } else {
+        console.log(error);
+      }
     }
-   }
-  }
+  };
 
-    useEffect(() => {
-        try {
-            fetchBlogs();
-        } catch (error) {
-            console.log(error)
-        }
-    }, [])
+  useEffect(() => {
+    try {
+      fetchBlogs();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
-    return {blogsState, loading}
+  return { blogsState, loading };
 };
