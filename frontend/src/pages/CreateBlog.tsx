@@ -1,33 +1,24 @@
-import { ChangeEvent, useState } from "react";
-import { Appbar } from "../components/Appbar";
 import axios, { isAxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ButtonPublish } from "../components/ButtonPublish";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createBlogSchema, CreateBlogSchema } from "@ekanshk/medium-common";
+import { useEffect } from "react";
 
 export const CreateBlog = () => {
   const navigate = useNavigate();
-  const [blog, setBlog] = useState({ title: "", content: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    e.preventDefault();
-    setBlog((prev) => {
-      return {
-        ...prev,
-        [e.target.id]: e.target.value,
-      };
-    });
-  };
 
-  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<CreateBlogSchema>({resolver: zodResolver(createBlogSchema)})
 
+  
+  const submitForm = async (data: CreateBlogSchema) => {
+    
     try {
-      setIsSubmitting(true);
-      const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, blog, {
+      const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, data, {
         headers: { Authorization: localStorage.getItem("Authorization") },
       });
       alert("new blog created!");
@@ -35,44 +26,47 @@ export const CreateBlog = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {
+          // setError("root", error.response.data.msg)
           alert(error.response.data.msg);
-          setIsSubmitting(false);
           if (error.response.status === 401) {
             navigate("/signin");
           }
         } else {
+          // setError("root", error)
           alert(error.message);
-          setIsSubmitting(false);
         }
       } else {
         console.log(error);
-        setIsSubmitting(false);
       }
     }
   };
+  
+  useEffect(() => {
+    if (errors.title || errors.content || errors.root) {
+      alert(errors.title?.message || errors.content?.message || errors.root?.message) 
+    }
+  }, [errors])
 
   return (
-    <div className="h-screen w-full flex flex-col place-items-center gap-5 ">
-      <Appbar />
       <form
         className="md:max-w-3xl w-full p-10 flex flex-col gap-6 "
-        onSubmit={submitForm}
+        onSubmit={handleSubmit(submitForm)}
       >
         <input
           className="md:text-5xl text-4xl font-bold outline-none"
           placeholder="Title"
           id="title"
-          onChange={handleChange}
+          {...register("title")}
         />
         <textarea
           className="font-roman md:leading-loose tracking-wide md:text-xl leading-relaxed outline-none"
           rows={15}
           placeholder="Tell your story..."
           id="content"
-          onChange={handleChange}
+          {...register("content")}
         />
         <ButtonPublish isSubmitting={isSubmitting} />
+        {/* {errors? <div>{errors.root?.message}</div> : null} */}
       </form>
-    </div>
   );
 };

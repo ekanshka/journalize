@@ -5,23 +5,23 @@ import zod from 'zod'
 export const signupSchema = zod.object({
     email: zod.string().email(),
     name: zod.string().optional(),
-    password: zod.string().min(6)
+    password: zod.string().min(6, {message: "Password must be atleast 6 characters"})
 })
 
 export const signinSchema = zod.object({
     email: zod.string().email(),
-    password: zod.string().min(6)
+    password: zod.string().min(6, {message: "Password must be atleast 6 characters"})
 })
 
 export const createBlogSchema = zod.object({
-    title: zod.string(),
-    content: zod.string()
+    title: zod.string().min(5, {message: "Title is too short"}),
+    content: zod.string().min(10, {message: "Content is too short!"})
 })
 
 export const updateBlogSchema = zod.object({
     id: zod.string(),
-    title: zod.string(),
-    content: zod.string()
+    title: zod.string().min(5, {message: "Title is too short"}),
+    content: zod.string().min(10, {message: "Content is too short!"})
 })
 
 export type SignupSchema = zod.infer<typeof signupSchema>

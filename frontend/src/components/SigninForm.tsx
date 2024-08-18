@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
-import { SigninSchema } from "@ekanshk/medium-common";
+import { SigninSchema, signinSchema } from "@ekanshk/medium-common";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { isAxiosError } from "axios";
 import { BACKEND_URL } from "../config";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 
 export const SigninForm = () => {
   const navigate = useNavigate()
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SigninSchema>();
+    formState: { errors, isSubmitting },
+  } = useForm<SigninSchema>({resolver: zodResolver(signinSchema)});
 
   const onSubmit = async (data: SigninSchema) => {
     try {
@@ -27,6 +29,12 @@ export const SigninForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (errors.email || errors.password || errors.root) {
+      alert(errors.email?.message || errors.password?.message || errors.root?.message)
+    }
+  }, [errors])
 
   return (
     <form
@@ -48,7 +56,7 @@ export const SigninForm = () => {
           <input
             {...register("email")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            type="email"
+            // type="email"
             placeholder="example@email.com"
           />
         </div>

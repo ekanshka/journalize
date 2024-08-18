@@ -25,7 +25,6 @@ export const BlogPreview = ({ blog }: IBlogPreviewProps) => {
       to={`/blogs/${blog.id}`}
       className="flex flex-col gap-3 border-b-2 w-full px-3 py-5 cursor-pointer"
     >
-      {/* <div className="font-semibold text-sm">{blog.author.name? blog.author.name : "Anonymous"}</div> */}
       <div className="flex place-items-center gap-3">
         <Avatar name={authorName} size="xs" />
         <div className="text-sm">{blog.author.name || "Anonymous"} </div>
