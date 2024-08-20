@@ -59,7 +59,7 @@ export const CreateBlog = () => {
           {...register("title")}
         />
         <textarea
-          className="font-roman md:leading-loose tracking-wide md:text-xl leading-relaxed outline-none"
+          className="font-roman md:leading-loose tracking-wide md:text-xl leading-relaxed outline-none focus:outline-none border-none"
           rows={15}
           placeholder="Tell your story..."
           id="content"

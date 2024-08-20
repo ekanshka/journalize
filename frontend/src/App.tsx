@@ -14,10 +14,10 @@ function App() {
     <Routes>
       <Route path="/signup" element={<SignupPage />}/>
       <Route path="/signin" element={<SigninPage />}/>
-      <Route path="/" element={<BlogLayout />}>
-        <Route path="/blogs" element={<Blogs />}/>
-        <Route path="/blogs/:id" element={<Blog />}/>
-        <Route path="/blogs/publish" element={<CreateBlog />}/>
+      <Route path="/blogs" element={<BlogLayout />}>
+        <Route path="" element={<Blogs />}/>
+        <Route path=":id" element={<Blog />}/>
+        <Route path="publish" element={<CreateBlog />}/>
       </Route>
       <Route path="*" element={<NotFound />}/>
     </Routes>
