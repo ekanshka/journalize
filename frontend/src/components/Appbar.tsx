@@ -42,10 +42,6 @@ export const Appbar = () => {
             New
           </button>
         </Link>
-        {/* <div className="border p-1 rounded-md border-blue-600">
-            <Avatar name={name} />
-            <span className="p-1">Hi, {name}</span>
-          </div> */}
 
         <Dropdown
           label=""
@@ -64,18 +60,11 @@ export const Appbar = () => {
               {user.email}
             </span>
           </Dropdown.Header>
-          <Dropdown.Item onClick={handleAllBlogRedirect}>For You</Dropdown.Item>
           <Dropdown.Item onClick={handleMyBlogRedirect}>My Blogs</Dropdown.Item>
+          <Dropdown.Item onClick={handleAllBlogRedirect}>For You</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>
-        {/* <button
-          type="button"
-          onClick={handleLogout}
-          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-        >
-          Logout
-        </button> */}
       </div>
     </div>
   );
